@@ -1,0 +1,86 @@
+    1  node
+    2  git
+    3  sudo apt-get install git
+    4  ls
+    5  ls -al
+    6  mkdir Projects
+    7  cd Projects/
+    8  ls
+    9  git clone https://github.com/sduan/angular-test.git
+   10  ls
+   11  cd angular-test/
+   12  ls
+   13  node --version
+   14  cd 
+   15  mkdir Software
+   16  cd Software/
+   17  ls
+   18  node
+   19  sudo apt-get install node
+   20  sudo apt-cache search node
+   21  sudo apt-cache search nodejs
+   22  sudo apt-get install node
+   23  node --version
+   24  nodejs
+   25  sudo apt-get install nodejs
+   26  nodejs --version
+   27  node --version
+   28  sudo apt-get update
+   29  sudo apt-get install nodejs
+   30  sudo apt-get install npm
+   31  sudo apt-get install build-essential libssl-dev
+   32  curl https://raw.githubusercontent.com/creationix/nvm/v0.16.1/install.sh | sh
+   33  source  ~/.profile 
+   34  nvm ls-remote
+   35  nvm install v0.12.2
+   36  nodejs --version
+   37  exit
+   38  nodejs --version
+   39  nvm use v0.12.2
+   40  nodejs --version
+   41  exit
+   42  node -v
+   43  nodejs --version
+   44  ls
+   45  cd PR
+   46  cd Projects/
+   47  ls
+   48  cd angular-test/
+   49  ls
+   50  npm install
+   51  sudo apt-get install nodejs-legacy npm
+   52  npm install
+   53  npm start
+   54  cd Projects/
+   55  ls
+   56  cd angular-test/
+   57  ls
+   58  npm start
+   59  iptables -ALL
+   60  sudo iptables
+   61  sudo iptables -h
+   62  sudo iptables -l
+   63  sudo iptables -all
+   64  sudo iptables -All
+   65  sudo iptables -L
+   66  sudo iptables -F
+   67  sudo iptables -L
+   68  npm start
+   69  ls
+   70  cat package.json 
+   71  vim
+   72  vi package.json 
+   73  npm start
+   74  git diff
+   75  ls
+   76  cd Projects/angular-test/
+   77  ls
+   78  npm start
+   79  ls
+   80  cp package.json ../
+   81  ls ..
+   82  ls
+   83  cd ..
+   84  cd angular-test/
+   85  ls
+   86  history >> history.log
