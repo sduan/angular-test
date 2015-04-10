@@ -1,0 +1,26 @@
+<p>This is the partial for Mandelbrot.</p>
+<div ng-controller="MandelbrotCtrl">
+
+<div style="width:{{width}}px; position:relative; text-align:center;">
+    <button style="height:2em;" ng-click='reset()'>Reset</button>
+    <span style="width:2em;">&nbsp;</span>
+    <button style="height:2em;" ng-click='stopProcessing()'>Stop Processing</button>
+    <span style="position:absolute; left:0; bottom:0;">{{x1 | number}} + {{y2 | number}}<i>i</i></span>
+    <span style="position:absolute; right:0; bottom:0;">{{x2 | number}} + {{y2 | number}}<i>i</i></span>
+</div>
+
+<div style="width:{{width}}px;
+            height:{{height}}px;"
+
+            rectangledrag>
+  <canvas />
+</div>
+
+<div style="width:{{width}}px; position:relative; text-align:center">
+    <span style="color:yellow">{{message}}</span>
+    <span style="position:absolute; left:0; top:0;">{{x1 | number}} + {{y1 | number}}<i>i</i></span>
+    <span style="position:absolute; right:0; top:0;">{{x2 | number}} + {{y1 | number}}<i>i</i></span>
+</div>
+
+</div>
+
