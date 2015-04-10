@@ -1,5 +1,10 @@
 'use strict';
 
+var SCOPE_WIDTH = 600;
+var SCOPE_HEIGHT = 600;
+var SCOPE_STEP = 50;
+var ZOOM_STEP = 100;
+
 function sign(x) {
   if (x<0) {
     return -1;
@@ -208,14 +213,14 @@ angular.module('myApp.mandelbrot', ['ngRoute'])
   }
 
   $scope.reset = function() {
-    $scope.width = 600;
-    $scope.height = 600;
-    $scope.step = 50
+    $scope.width = SCOPE_WIDTH;
+    $scope.height = SCOPE_HEIGHT;
+    $scope.step = SCOPE_STEP;
     $scope.message='';
-    $scope.x1 = -2
-    $scope.x2 = 0.5
-    $scope.y1 = -1.25
-    $scope.y2 = 1.25
+    $scope.x1 = -2;
+    $scope.x2 = 0.5;
+    $scope.y1 = -1.25;
+    $scope.y2 = 1.25;
 
     // Smallest integer whose successor is not representable in JavaScript
     $scope.max = Math.pow(2, 53);
@@ -227,7 +232,7 @@ angular.module('myApp.mandelbrot', ['ngRoute'])
     $scope.stopProcessing();
     $scope.fractal = document.getElementsByTagName('canvas')[0];
     $scope.set = new MandelbrotSet($scope.fractal, $scope.x1, $scope.y1, $scope.x2, $scope.y2, $scope.width, $scope.height, 2, $scope.max);
-    $scope.message='Working...';
+    $scope.message='Calculating...';
     $scope.drawPromise = $interval(function() {
       $scope.set.iterate($scope.step)
       $scope.message=$scope.set.steps + ' steps...';
@@ -241,6 +246,7 @@ angular.module('myApp.mandelbrot', ['ngRoute'])
   }
   
   $scope.zoom = function(x1, y1, x2, y2) {
+    //console.log("zoom", x1, y1, x2, y2);
     var new_x1 = $scope.x1 + x1 * ($scope.x2 - $scope.x1) / ($scope.width - 1);
     var new_x2 = $scope.x1 + x2 * ($scope.x2 - $scope.x1) / ($scope.width - 1);
     var new_y1 = $scope.y2 - y1 * ($scope.y2 - $scope.y1) / ($scope.height - 1);
@@ -299,6 +305,16 @@ angular.module('myApp.mandelbrot', ['ngRoute'])
           scope.zoom(box.x1, box.y1, box.x2, box.y2);
         }
       }
+      var hamster = Hamster(element[0]);
+      hamster.wheel(function(e, delta, deltaX, deltaY) {
+        console.log("mouse_wheel", delta, deltaX, deltaY);
+        if (delta > 0) {
+          scope.zoom(ZOOM_STEP, SCOPE_HEIGHT - ZOOM_STEP, SCOPE_WIDTH - ZOOM_STEP, ZOOM_STEP);
+        }
+        else {
+          scope.zoom(-ZOOM_STEP, SCOPE_HEIGHT + ZOOM_STEP, SCOPE_WIDTH + ZOOM_STEP, -ZOOM_STEP);
+        }
+      });
     }
   };
 });
