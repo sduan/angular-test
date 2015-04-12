@@ -83,59 +83,121 @@ angular.module('myApp.forcedirected', [])
       });
 
 
-    var nodeDataArray = [];
-
-    // Walk the DOM, starting at document
-    function traverseDom(node, parentName) {
-      // skip everything but HTML Elements
-      if (!(node instanceof Element)) return;
-      // Ignore the menu on the left of the page
-      if (node.id === "menu") return;
-      // add this node to the nodeDataArray
-      var name = getName(node);
-      var data = { key: name, name: name };
-      nodeDataArray.push(data);
-      // add a link to its parent
-      if (parentName !== null) {
-        data.parent = parentName;
-      }
-      // find all children
-      var l = node.childNodes.length;
-      for (var i = 0; i < l; i++) {
-        traverseDom(node.childNodes[i], name);
+  function rebuildGraph() {
+    var minNodes = document.getElementById("minNodes").value;
+    minNodes = parseInt(minNodes, 10);
+    var maxNodes = document.getElementById("maxNodes").value;
+    maxNodes = parseInt(maxNodes, 10);
+    var minChil = document.getElementById("minChil").value;
+    minChil = parseInt(minChil, 10);
+    var maxChil = document.getElementById("maxChil").value;
+    maxChil = parseInt(maxChil, 10);
+    generateTree(minNodes, maxNodes, minChil, maxChil);
+  }
+  function generateTree(minNodes, maxNodes, minChil, maxChil) {
+    diagram.startTransaction("generateTree");
+    // replace the diagram's model's nodeDataArray
+    generateNodes(minNodes, maxNodes);
+    // replace the diagram's model's linkDataArray
+    generateLinks(minChil, maxChil);
+    // perform a diagram layout with the latest parameters
+    layout();
+    diagram.commitTransaction("generateTree");
+  }
+  // Creates a random number of randomly colored nodes.
+  function generateNodes(min, max) {
+    var nodeArray = [];
+    if (isNaN(min) || min < 0) min = 0;
+    if (isNaN(max) || max < min) max = min;
+    var numNodes = Math.floor(Math.random() * (max - min + 1)) + min;
+    for (var i = 0; i < numNodes; i++) {
+      nodeArray.push({
+        key: i,
+        text: i.toString(),
+        fill: go.Brush.randomColor()
+      });
+    }
+    // randomize the node data
+    for (i = 0; i < nodeArray.length; i++) {
+      var swap = Math.floor(Math.random() * nodeArray.length);
+      var temp = nodeArray[swap];
+      nodeArray[swap] = nodeArray[i];
+      nodeArray[i] = temp;
+    }
+    // set the nodeDataArray to this array of objects
+    diagram.model.nodeDataArray = nodeArray;
+  }
+  // Takes the random collection of nodes and creates a random tree with them.
+  // Respects the minimum and maximum number of links from each node.
+  // (The minimum can be disregarded if we run out of nodes to link to)
+  function generateLinks(min, max) {
+    if (diagram.nodes.count < 2) return;
+    if (isNaN(min) || min < 1) min = 1;
+    if (isNaN(max) || max < min) max = min;
+    var linkArray = [];
+    // make two Lists of nodes to keep track of where links already exist
+    var nit = diagram.nodes;
+    var nodes = new go.List(go.Node);
+    nodes.addAll(nit);
+    var available = new go.List(go.Node);
+    available.addAll(nodes);
+    for (var i = 0; i < nodes.length; i++) {
+      var next = nodes.elt(i);
+      available.remove(next)
+      var children = Math.floor(Math.random() * (max - min + 1)) + min;
+      for (var j = 1; j <= children; j++) {
+        if (available.length === 0) break;
+        var to = available.elt(0);
+        available.remove(to);
+        // get keys from the Node.text strings
+        var nextKey = parseInt(next.text, 10);
+        var toKey = parseInt(to.text, 10);
+        linkArray.push({ from: nextKey, to: toKey });
       }
     }
+    diagram.model.linkDataArray = linkArray;
+  }
+  // Update the layout from the controls.
+  // Changing the properties will invalidate the layout.
+  function layout() {
+    diagram.startTransaction("changed Layout");
+    var lay = diagram.layout;
+    var maxIter = document.getElementById("maxIter").value;
+    maxIter = parseInt(maxIter, 10);
+    lay.maxIterations = maxIter;
+    var epsilon = document.getElementById("epsilon").value;
+    epsilon = parseFloat(epsilon, 10);
+    lay.epsilon = epsilon;
+    var infinity = document.getElementById("infinity").value;
+    infinity = parseFloat(infinity, 10);
+    lay.infinity = infinity;
+    var arrangement = document.getElementById("arrangement").value;
+    var arrangementSpacing = new go.Size();
+    arrangement = arrangement.split(" ", 2);
+    arrangementSpacing.width = parseFloat(arrangement[0], 10);
+    arrangementSpacing.height = parseFloat(arrangement[1], 10);
+    lay.arrangementSpacing = arrangementSpacing;
+    var charge = document.getElementById("charge").value;
+    charge = parseFloat(charge, 10);
+    lay.defaultElectricalCharge = charge;
+    var mass = document.getElementById("mass").value;
+    mass = parseFloat(mass, 10);
+    lay.defaultGravitationalMass = mass;
+    var stiffness = document.getElementById("stiffness").value;
+    stiffness = parseFloat(stiffness, 10);
+    lay.defaultSpringStiffness = stiffness;
+    var length = document.getElementById("length").value;
+    length = parseFloat(length, 10);
+    lay.defaultSpringLength = length;
+    diagram.commitTransaction("changed Layout");
+  }
 
-    // Give every node a unique name
-    function getName(node) {
-      var n = node.nodeName;
-      if (node.id) n = n + " (" + node.id + ")";
-      var namenum = n;
-      var i = 1;
-      while (names[namenum] !== undefined) {
-        namenum = n + i;
-        i++;
-      }
-      names[namenum] = node;
-      return namenum;
-    }
+  rebuildGraph();
 
-    // build up the tree
-    traverseDom(document.activeElement, null);
-
-    // create the model for the DOM tree
-    diagram.model = new go.TreeModel(nodeDataArray);
-
-      // When a Node is selected, highlight the corresponding HTML element.
-      function nodeSelectionChanged(node) {
-        if (node.isSelected) {
-          names[node.data.name].style.backgroundColor = "lightblue";
-        } else {
-          names[node.data.name].style.backgroundColor = "";
-        }
-      }
     }
   };
 })
+
 .controller('ForcedirectedCtrl', function($scope) {
+
 });

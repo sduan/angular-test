@@ -2,5 +2,34 @@
 
 <!-- GoJS diagram -->
 <div id="sample" >
-<go-diagram1 go-model="model" style="background: white; border: solid 1px black; width: 100%; height: 500px"></go-diagram1>
+<go-diagram1 go-model="model" style="background: white; border: solid 1px black; width: 100%; height: 800px"></go-diagram1>
 </div>
+
+
+  <div style="margin-bottom: 5px; padding: 5px; background-color: aliceblue">
+    <span style="display: inline-block; vertical-align: top; padding: 5px">
+      <b>New Tree</b><br />
+      MinNodes: <input type="text" size="2" id="minNodes" value="30" /><br />
+      MaxNodes: <input type="text" size="2" id="maxNodes" value="50" /><br />
+      MinChildren: <input type="text" size="2" id="minChil" value="1" /><br />
+      MaxChildren: <input type="text" size="2" id="maxChil" value="10" /><br />
+      <!-- <button type="button" ng-click="rebuildGraph()">Generate Tree</button> -->
+    </span>
+    <span style="display: inline-block; vertical-align: top; padding: 5px">
+      <b>ForceDirectedLayout Properties</b><br />
+      Max Iterations: <input type="text" size="5" id="maxIter" value="100"  onchange="layout()" /><br />
+      Epsilon: <input type="text" size="5" id="epsilon" value="1"  onchange="layout()" /><br />
+      Infinity: <input type="text" size="5" id="infinity" value="1000"  onchange="layout()" /><br />
+      ArrangementSpacing: <input type="text" size="5" id="arrangement" value="100 100"  onchange="layout()" /><br />
+    </span>
+    <span style="display: inline-block; vertical-align: top; padding: 5px">
+      <b>Vertex Properties</b><br />
+      Electrical Charge: <input type="text" size="5" id="charge" value="150"  onchange="layout()" /><br />
+      Gravitational Mass: <input type="text" size="5" id="mass" value="0"  onchange="layout()" /><br />
+    </span>
+    <span style="display: inline-block; vertical-align: top; padding: 5px">
+      <b>Edge Properties</b><br />
+      Spring Stiffness: <input type="text" size="5" id="stiffness" value="0.05"  onchange="layout()" /><br />
+      Spring Length: <input type="text" size="5" id="length" value="50"  onchange="layout()" /><br />
+    </span>
+  </div>
