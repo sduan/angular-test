@@ -6,6 +6,7 @@ angular.module('myApp', [
   'myApp.mandelbrot',
   'myApp.view1',
   'myApp.view2',
+  'myApp.forcedirected',
   'myApp.version'
 ]).
 config(['$routeProvider', function($routeProvider) {
