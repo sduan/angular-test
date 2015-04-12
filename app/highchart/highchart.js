@@ -48,16 +48,20 @@ angular.module('myApp.highchart', ['highcharts-ng'])
     $scope.chartConfig = {
         options: {
             chart: {
-                type: 'bar'
+                type: 'line'
             }
         },
         series: [{
             data: [10, 15, 12, 8, 7]
         }],
         title: {
-            text: 'Bar Chart'
+            text: 'Chart'
         },
 
         loading: false
-    }  
+    }
+
+    $scope.addSeries();
+    $scope.addSeries();
+    $scope.addSeries();
 });
