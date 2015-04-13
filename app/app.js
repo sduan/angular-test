@@ -9,6 +9,7 @@ angular.module('myApp', [
   'myApp.view2',
   'myApp.forcedirected',
   'myApp.highchart',
+  'myApp.highchart3d',
   'myApp.version'
 ]).
 config(['$routeProvider', function($routeProvider) {
